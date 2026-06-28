@@ -2,36 +2,39 @@
 
 An end-to-end Machine Learning, Explainable AI (XAI), and Business Intelligence (BI) platform built to predict customer churn, explain predictive decisions, evaluate revenue exposure, and automate customer retention campaigns. 
 
-This platform features a dual-dashboard architecture: an interactive **Power BI Business Dashboard** for executive analytics, and a custom **Streamlit Web Application** for real-time model inference and explainability.
+This platform features a dual-dashboard architecture: an interactive, publication-ready **Power BI Executive Dashboard** for advanced business reporting, and a custom **Streamlit Web Application** for real-time model inference and explainability.
 
 ---
 
-## ⚡ Power BI Dashboard Integration
+## ⚡ Power BI Dashboard & Data Modeling
 
-The core analytical engine of this platform is designed to process, enrich, and export customer data into a unified schema specifically optimized for **Power BI**. 
+The flagship business dashboard is built in Power BI Desktop and located in the [powerbi/](file:///d:/customer-churn-intelligence-platform/powerbi) directory as **[Customer_Churn_Intelligence.pbix](file:///d:/customer-churn-intelligence-platform/powerbi/Customer_Churn_Intelligence.pbix)**.
 
-The backend automated pipeline generates a consolidated analytical view at `reports/dashboard/dashboard_dataset.csv`. This dataset acts as the single source of truth for the Power BI dashboard, enabling interactive modeling of:
-- **Revenue at Risk**: Direct correlation of churn probabilities against monthly recurring revenue (MRR).
-- **Campaign ROI**: Tracking estimated retention budget costs vs. expected revenue saved.
-- **Customer Segmentation**: Slicing customer behaviors across demographic groups, service configuration types, and ML-generated clusters.
+### Data Flow & Automated Export
+The backend Python machine learning pipeline dynamically constructs, enriches, and exports a unified analytical dataset to **`reports/dashboard/dashboard_dataset.csv`**. The Power BI report links directly to this file, ensuring that model retraining or prediction updates instantly propagate to the BI charts upon refresh.
 
-### Enriched Data Schema for BI Modeling
-The exported CSV dataset includes the following pre-formatted dimensions and measures:
-1. **Identity & Demographics**: `CustomerID`, `gender`, `SeniorCitizen` (normalized), `Partner`, `Dependents`.
-2. **Account Details & Services**: `tenure` (months), `Contract`, `PaperlessBilling`, `PaymentMethod`, and 9 active services (e.g., `PhoneService`, `InternetService`, `OnlineSecurity`).
-3. **Financial Metrics**: `MonthlyCharges`, `TotalCharges`.
-4. **Machine Learning Churn Risk**: `Churn_Probability` (0.0 - 1.0), `Risk_Segment` (Critical, At Risk, Stable, Safe).
-5. **Clustering & Personas**: `Persona` (K-Means generated cluster tags like *Loyal Long-Term*, *High-Value At-Risk*).
-6. **Retention Engine Campaign metrics**: `Priority_Score` (MRR exposure), `Retention_Action`, `Estimated_Action_Cost`.
+### Analytical Schema & DAX Measures
+The dataset consolidates customer identities, active service details, churn risk probabilities, K-Means customer personas, and prioritized retention recommendations. Within the Power BI data model, advanced analytical measures are implemented using **DAX** (Data Analysis Expressions):
+
+- **Total MRR at Risk**: Sum of monthly charges weighted by predictive churn probability:
+  $$\text{MRR at Risk} = \sum \left( \text{Monthly Charges} \times \text{Churn Probability} \right)$$
+- **Expected Campaign ROI**: Protectable monthly revenue per dollar spent on retention campaigns:
+  $$\text{Campaign ROI} = \frac{\text{Total MRR at Risk}}{\text{Total Estimated Campaign Cost}}$$
+- **Churn Rate Metrics**: Side-by-side comparison of actual historical churn against the predictive expected churn rate.
+
+### Dashboard Pages
+1. **Executive Churn Overview**: High-level KPIs (Total MRR, Churn Rate, count of High/Critical Risk accounts) and interactive monthly revenue exposure charts.
+2. **Customer Segmentation & Personas**: Detailed breakdowns of customer groups generated via machine learning clustering (e.g., *High-Value At-Risk*, *Loyal Long-Term*) sliced by contract types and payment methods.
+3. **Retention Campaign ROI Tracker**: Financial planning view showing expected MRR saved vs. campaign costs for outbound discount upgrades, tech support trials, and loyalty credits.
 
 ---
 
 ## 🖥️ Streamlit Web Application
 
-While Power BI serves as the primary business analytics hub, the **Streamlit Web App** provides a user interface for model explainability and individual customer inference:
+The **Streamlit Web Application** provides an interactive playground for real-time customer churn prediction and model explainability:
 
 1. **📊 Executive Dashboard**  
-   Quick real-time overview of customer churn, revenue risk, and Plotly distributions matching the KPI definitions in Power BI.
+   Quick overview of customer churn, revenue risk, and Plotly distributions matching the KPI definitions in Power BI.
 2. **🎯 Predict Churn**  
    Interactive input form that feeds customer details directly into the inference pipeline, displaying predicted probability, risk badges, and recommended actions.
 3. **🧠 Model Explainability**  
@@ -57,6 +60,8 @@ The codebase follows a modular design pattern separating preprocessing, pipeline
 │   └── processed/          # Preprocessed data matrices ready for training
 ├── models/                 # Alternate model binary pickles (RF, XGBoost, etc.)
 ├── notebooks/              # Step-by-step Jupyter EDA and Model pipelines
+├── powerbi/                # Power BI Desktop Report Files
+│   └── Customer_Churn_Intelligence.pbix  # Primary executive business report
 ├── reports/
 │   ├── dashboard/          # Consolidated dataset exported for Power BI import
 │   ├── explainability/     # Feature importance rankings
@@ -111,11 +116,11 @@ The codebase follows a modular design pattern separating preprocessing, pipeline
 
 ## 🏃 Running the Applications
 
-### 1. Generating the Power BI / Dashboard Dataset
-To generate the latest enriched dataset (`reports/dashboard/dashboard_dataset.csv`) from raw inputs, run the pipeline execution script or step through the Jupyter Notebooks:
-- Step 1: Execute `notebooks/03_feature_engineering.ipynb` to output processed tables.
-- Step 2: Execute `notebooks/07_business_insights.ipynb` to apply ML predictions, fit K-Means clustering, assign retention campaign costs, and export the consolidated CSV.
-- Step 3: Open **Power BI Desktop**, select **Get Data -> Text/CSV**, and select `reports/dashboard/dashboard_dataset.csv` to refresh all reports.
+### 1. Refreshing Power BI Dashboard Data
+To update the underlying analytics in Power BI with new predictions or model runs:
+- Step 1: Run the analytical pipelines via Jupyter notebooks (e.g. `notebooks/07_business_insights.ipynb`) to refresh the CSV export.
+- Step 2: Open **`powerbi/Customer_Churn_Intelligence.pbix`** in Power BI Desktop.
+- Step 3: Click **Refresh** in the home ribbon to reload the updated model metrics.
 
 ### 2. Launching the Streamlit Interface
 To run the Streamlit web application:
