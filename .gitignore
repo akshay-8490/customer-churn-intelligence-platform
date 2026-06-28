@@ -1,0 +1,36 @@
+# Python Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python caching & bytecode
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+
+# IDEs & Editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# System files
+Thumbs.db
+.DS_Store
+ehthumbs.db
+
+# Local Gemini configuration and logs
+.gemini/
+.agents/
+
+# Large binaries / Large Model Artifacts
+models/*.pkl
+!models/README.md
