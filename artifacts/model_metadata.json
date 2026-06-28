@@ -1,0 +1,13 @@
+{
+    "model_name": "Logistic Regression",
+    "best_parameters": {
+        "C": 1,
+        "class_weight": "balanced",
+        "penalty": "l1",
+        "solver": "liblinear"
+    },
+    "threshold": 0.55,
+    "cv_score": 0.6313285766475112,
+    "roc_auc": 0.8387630244928124,
+    "monthly_charge_median": 70.35
+}
