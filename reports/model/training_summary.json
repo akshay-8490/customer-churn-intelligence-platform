@@ -1,0 +1,14 @@
+{
+    "Dataset Size": 7021,
+    "Features": 50,
+    "Baseline Accuracy": "73.52%",
+    "Best Model": "Logistic Regression",
+    "Tuned Model": "Logistic Regression",
+    "Accuracy (Tuned)": "75.87%",
+    "Precision (Tuned)": "53.23%",
+    "Recall (Tuned)": "73.12%",
+    "F1 (Tuned)": "61.61%",
+    "ROC-AUC (Tuned)": "83.88%",
+    "Cross Validation (Tuned)": "63.13% \u00b1 1.12%",
+    "Threshold": 0.55
+}
